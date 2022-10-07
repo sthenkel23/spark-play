@@ -1,6 +1,5 @@
 #!/bin/bash
 
-cd ..
 PACKAGE_NAME="spark-play"
 
 poetry new --src $PACKAGE_NAME
