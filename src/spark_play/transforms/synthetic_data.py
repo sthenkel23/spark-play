@@ -8,6 +8,8 @@ def fake_data():
     """_summary_
     """
     spark = SparkSession.builder.getOrCreate()
-    df = spark.sql()
+    df = spark.sql(
+        HELLO_WORLD
+    )
     df.show()
     return df
