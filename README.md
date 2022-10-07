@@ -1,5 +1,7 @@
 # Boilerplate to run pyspark and play
 
-## run the following
+## Execute
 `source scripts/poetry-play.sh`
 
+## Other
+> Use Makefile for CI/CD et al.
