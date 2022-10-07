@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "spark-play"
+version = "0.1.0"
+description = ""
+authors = ["Steffen Henkelmann <coder.henkelmann@gmail.com>"]
+readme = "README.md"
+packages = [{include = "spark_play", from = "src"}]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+pyspark = "^3.3.0"
+
+
+[tool.poetry.scripts]
+spark-play = "flows.pipeline-1:workflow"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
