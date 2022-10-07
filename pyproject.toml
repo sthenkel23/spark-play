@@ -15,6 +15,18 @@ pyspark = "^3.3.0"
 spark-play = "flows.pipeline-1:workflow"
 
 
+[tool.poetry.group.dev.dependencies]
+darglint = "^1.8.1"
+flake8 = "^5.0.4"
+black = "^22.10.0"
+isort = "^5.10.1"
+mypi = "^0.0.3"
+pytest = "^7.1.3"
+pytest-cov = "^4.0.0"
+pylint = "^2.15.3"
+pydocstyle = "^6.1.1"
+safety = "^2.3.1"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
