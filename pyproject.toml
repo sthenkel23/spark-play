@@ -9,10 +9,11 @@ packages = [{include = "spark_play", from = "src"}]
 [tool.poetry.dependencies]
 python = "^3.10"
 pyspark = "^3.3.0"
+pandas = "^1.5.0"
 
 
 [tool.poetry.scripts]
-spark-play = "flows.pipeline-1:workflow"
+spark_play = "flows.pipeline-1:workflow"
 
 
 [tool.poetry.group.dev.dependencies]
@@ -30,3 +31,22 @@ safety = "^2.3.1"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+
+
+[tool.black]
+# https://github.com/psf/black
+line-length = 100
+target-version = ["py310"]
+
+[tool.isort]
+# https://github.com/timothycrosley/isort/
+known_typing = "typing,types,typing_extensions,mypy,mypy_extensions"
+sections = "FUTURE,TYPING,STDLIB,THIRDPARTY,FIRSTPARTY,LOCALFOLDER"
+include_trailing_comma = true
+default_section = "FIRSTPARTY"
+multi_line_output = 3
+indent = 4
+force_grid_wrap = 0
+use_parentheses = true
+line_length = 100

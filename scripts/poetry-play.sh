@@ -1,6 +1,6 @@
 #!/bin/bash
 
+poetry shell
 poetry install
 export PYTHONPATH=$PYTHONPATH:$PWD/src
-poetry shell
-poetry run spark-play      
+poetry run spark_play      
