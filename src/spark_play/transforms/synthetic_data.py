@@ -2,7 +2,7 @@ import pandas as pd
 import numpy as np
 from pyspark.sql.window import Window
 import pyspark.sql.functions as F
-
+import pyspark.sql.types as T
 from spark_play.data.ssql_queries import HELLO_WORLD
 from spark_play.utils.spark_session import (
     session_builder,
@@ -46,3 +46,16 @@ def pd_rdn_feature_creator(n_user: int, n_features: int) -> pd.DataFrame:
     df = df.withColumn("idx", F.row_number().over(w))
     df = create_features(df, n_features)
     return df
+
+
+def create_spark_dataframe():
+    spark = session_builder()
+    spark = set_session_conf(spark, **{"spark.app.name": "new_name"})
+    schema = T.StructType([
+        T.StructField("id", T.StringType(), True),
+        T.StructField("name", T.IntegerType(), True),
+        T.StructField("attr_one", T.DoubleType(), True),
+        T.StructField("attr_two", T.DoubleType(), True),
+    ])
+    data = []
+    return spark.createDataFrame(data, schema)
