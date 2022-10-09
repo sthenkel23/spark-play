@@ -5,25 +5,24 @@ from pyspark.sql import functions as F, types as T
 
 
 cfg2col = {"2 week": "biweek", "week": "weekofyear", "month": "month"}
-
 PK = ["gid", "year", cfg2col["2 week".split()[1]] if "2 week" not in cfg2col else cfg2col["2 week"]]
 
 
-def add_features(df: DataFrame, number_of_features: int) -> DataFrame:
+def create_features(df: DataFrame, n_feature: int) -> DataFrame:
     """_summary_
 
     Args:
-        DF (_type_): _description_
-        number_of_features (_type_): _description_
+        df (DataFrame): _description_
+        n_feature (int): _description_
 
     Returns:
-        _type_: _description_
+        DataFrame: _description_
     """
     return reduce(
         lambda d, i: d.withColumn(
-            i, rand((int(i.split("_")[1]) + 1)) * (int(i.split("_")[1]) + 1) * 10000.0
+            i, rand((int(i.split("_")[1]) + 1)) * (int(i.split("_")[1]) + 1) * 100.0
         ),
-        ["feat_{}".format(c) for c in range(number_of_features)],
+        ["feat_{}".format(c) for c in range(n_feature)],
         df,
     )
 
@@ -52,22 +51,3 @@ def sequence_explode(df: DataFrame) -> DataFrame:
         .withColumn(PK[-1], col2logic[PK[-1]])
     )
     return df
-
-
-def create_features(df: DataFrame, n_feature: int) -> DataFrame:
-    """_summary_
-
-    Args:
-        df (DataFrame): _description_
-        n_feature (int): _description_
-
-    Returns:
-        DataFrame: _description_
-    """
-    return reduce(
-        lambda d, i: d.withColumn(
-            i, rand((int(i.split("_")[1]) + 1)) * (int(i.split("_")[1]) + 1) * 100.0
-        ),
-        ["feat_{}".format(c) for c in range(n_feature)],
-        df,
-    )
