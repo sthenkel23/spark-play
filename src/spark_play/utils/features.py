@@ -4,8 +4,8 @@ from functools import reduce
 from pyspark.sql import functions as F, types as T
 
 
-cfg2col = {"2 week": "biweek", "week": "weekofyear", "month": "month"}
-PK = ["gid", "year", cfg2col["2 week".split()[1]] if "2 week" not in cfg2col else cfg2col["2 week"]]
+cfg2col = {"week": "weekofyear"}
+PK = ["gid", "year", cfg2col["week".split()[1]] if "week" not in cfg2col else cfg2col["week"]]
 
 
 def create_features(df: DataFrame, n_feature: int) -> DataFrame:
@@ -38,16 +38,9 @@ def sequence_explode(df: DataFrame) -> DataFrame:
     """
     date_col = "date_from"
     col2logic = {
-        "biweek": F.ceil(F.weekofyear(F.col(date_col)) / F.lit(2).cast(T.IntegerType())),
         "weekofyear": (F.weekofyear(F.col(date_col))).cast(T.IntegerType()),
-        "month": (F.month(F.col(date_col))).cast(T.IntegerType()),
-        "year": (F.year(F.col(date_col))).cast(T.IntegerType()),
     }
-    date_sequencer = f"sequence(to_date('{2020-12-24}'), to_date('{2023-12-24}'), interval {'2 week'}) AS {date_col}"
+    date_sequencer = f"sequence(to_date('{2020-12-24}'), to_date('{2023-12-24}'), interval {'1 week'}) AS {date_col}"
     df = df.selectExpr("*", date_sequencer)
-    df = (
-        df.withColumn(date_col, F.explode(F.col(date_col)))
-        .withColumn("year", col2logic["year"])
-        .withColumn(PK[-1], col2logic[PK[-1]])
-    )
+    df = df.withColumn(date_col, F.explode(F.col(date_col))).withColumn(PK[-1], col2logic[PK[-1]])
     return df

@@ -28,6 +28,8 @@ def set_session_conf(spark: SparkSession, **kwargs) -> SparkSession:
     for c in spark.sparkContext.getConf().getAll():
         print(c)
     for k, v in kwargs.items():
+        print("Set spark config to \n")
+        print(k, v)
         spark.conf.set(k, v)
     return spark
 
@@ -73,7 +75,9 @@ def define_dataset_with_pandas_dataframe(spark: SparkSession, df: pd.DataFrame) 
     return spark.createDataFrame(df)
 
 
-def store_dataframe(df: DataFrame, workspace: str, filename: str, format: str, mode: str="overwrite"):
+def store_dataframe(
+    df: DataFrame, workspace: str, filename: str, format: str, mode: str = "overwrite"
+):
     """_summary_
 
     Args:
@@ -92,6 +96,34 @@ def store_dataframe(df: DataFrame, workspace: str, filename: str, format: str, m
     )
 
 
+def store_dataframe_on_gcp_bucket(
+    spark: SparkSession,
+    df: DataFrame,
+    bucket_name: str,
+    filename: str,
+    format: str,
+    mode: str = "overwrite",
+):
+    """_summary_
+
+    Args:
+        df (DataFrame): _description_
+        workspace (str): _description_
+        filename (str): _description_
+
+    Returns:
+        _type_: _description_
+    """
+    # spark.conf.set("spark.jars", f'{}/gcs-connector-hadoop2-latest.jar')
+
+    return (
+        df.coalesce(1)
+        .write.option("header", "true")
+        .mode(mode)
+        .parquet(f"gs://${bucket_name}/data/{filename}.{format}")
+    )
+
+
 def read_dataframe(spark: SparkSession, workspace: str, filename: str, format: str) -> DataFrame:
     """_summary_
 
@@ -102,4 +134,3 @@ def read_dataframe(spark: SparkSession, workspace: str, filename: str, format: s
         format (str): _description_
     """
     return spark.read.parquet(f"{workspace}/data/{filename}.{format}")
-    

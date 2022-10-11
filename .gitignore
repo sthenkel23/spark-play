@@ -128,7 +128,8 @@ dmypy.json
 # Pyre type checker
 .pyre/
 
+./env
+.data/
 
-# Prefect
-*deployment.yaml
-.prefectignore
+# GCP
+local-gcp.sh
