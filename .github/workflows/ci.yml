@@ -64,8 +64,3 @@ jobs:
       with:
         name: dist
         path: ./dist
-
-    - uses: actions/upload-artifact@v2
-      with:
-        name: jobs
-        path: ./jobs

@@ -1,9 +1,10 @@
+import os
 from pyspark.sql import functions as F
 from spark_play.utils.helper import Timer
 from spark_play.transforms.synthetic_data import pd_rdn_feature_creator
 from spark_play.utils.spark_session import (
     store_dataframe,
-    # store_dataframe_on_gcp_bucket,
+    store_dataframe_on_gcp_bucket,
     read_dataframe,
 )
 from spark_play.utils.spark_session import session_builder, set_session_conf
@@ -30,8 +31,8 @@ def create_data(spark):
         F.sum(F.when(F.col("f_0").isNotNull(), 1).otherwise(0)).alias("common features"),
     )
     print(df.show())
-    store_dataframe(df, workspace="./", filename="enjoy", format="parquet")
-    # store_dataframe_on_gcp_bucket(spark, df, bucket_name=os.environ["BUCKET_NAME"], filename="enjoy", format="parquet")
+    # store_dataframe(df, workspace="./", filename="enjoy", format="parquet")
+    store_dataframe_on_gcp_bucket(spark, df, bucket_name=os.environ["BUCKET_NAME"], filename="enjoy", format="parquet")
     pass
 
 
