@@ -139,7 +139,8 @@ lint:
 pex: 
 	pip install pex && \
 	poetry run pip freeze > requirements.txt && \
-	pex -v -r requirements.txt -e flows/pipeline-1.py -o dist/${IMAGE}.pex --disable-cache
+	pex -v -r requirements.txt -o dist/${IMAGE}.pex --disable-cache
+	# pex -v -r requirements.txt -e flows/pipeline-1.py -o dist/${IMAGE}.pex --disable-cache
 
 .PHONY: dist
 dist: install build pex

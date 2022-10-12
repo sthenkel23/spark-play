@@ -15,8 +15,8 @@ def create_data(spark):
     Args:
         spark (_type_): _description_
     """
-    df = pd_rdn_feature_creator(spark, n_user=1000, n_features=5)
-    df_2 = pd_rdn_feature_creator(spark, n_user=20, n_features=2)
+    df = pd_rdn_feature_creator(spark, n_user=100000, n_features=5)
+    df_2 = pd_rdn_feature_creator(spark, n_user=200, n_features=2)
 
     df_2 = df_2.selectExpr("id", "feat_0 as f_0", "feat_1 as f_1")
     with Timer("This it being timed -->>> "):
@@ -31,20 +31,26 @@ def create_data(spark):
     )
     print(df.show())
     # store_dataframe(df, workspace="./", filename="enjoy", format="parquet")
-    store_dataframe_on_gcp_bucket(spark, df, bucket_name=spark.conf.get("BUCKET_NAME"), filename="enjoy", format="parquet")
+    store_dataframe_on_gcp_bucket(
+        spark, df, bucket_name=spark.conf.get("BUCKET_NAME"), filename="enjoy", format="parquet"
+    )
     pass
 
 
 def read_data(spark):
-    df = read_dataframe_from_gcp_bucket(spark, bucket_name=spark.conf.get("BUCKET_NAME"), filename="enjoy", format="parquet")
-    print(df.show())
+    df = read_dataframe_from_gcp_bucket(
+        spark, bucket_name=spark.conf.get("BUCKET_NAME"), filename="enjoy", format="parquet"
+    )
+    df.createOrReplaceTempView("df_sql")
+    spark.sql("SELECT * from df_sql LIMIT 5").show()
     pass
 
 
 def workflow():
     conf = {
         "spark.app.name": "new_name",
-        "BUCKET_NAME": sys.argv[1]
+        "BUCKET_NAME": sys.argv[1],
+        # "spark.driver.memory": '16gb'
     }
     spark = session_builder()
     spark = set_session_conf(spark, **conf)

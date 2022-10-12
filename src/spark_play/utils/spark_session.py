@@ -136,7 +136,9 @@ def read_dataframe(spark: SparkSession, workspace: str, filename: str, format: s
     return spark.read.parquet(f"{workspace}/data/{filename}.{format}")
 
 
-def read_dataframe_from_gcp_bucket(spark: SparkSession, bucket_name: str, filename: str, format: str) -> DataFrame:
+def read_dataframe_from_gcp_bucket(
+    spark: SparkSession, bucket_name: str, filename: str, format: str
+) -> DataFrame:
     """_summary_
 
     Args:
