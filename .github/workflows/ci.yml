@@ -57,9 +57,14 @@ jobs:
         pip install pex
         poetry env use python3.10
         poetry run pip freeze > requirements.txt
-        pex -v -r requirements.txt -e ${IMAGE}.jobs.jobs_1 -o dist/${IMAGE}.pex --disable-cache
+        pex -v -r requirements.txt -e jobs/${IMAGE}.jobs.job_1 -o dist/${IMAGE}.pex --disable-cache
 
     - uses: actions/upload-artifact@v2
       with:
         name: dist
         path: ./dist
+
+    - uses: actions/upload-artifact@v2
+      with:
+        name: jobs
+        path: ./jobs
