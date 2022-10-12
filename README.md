@@ -10,7 +10,7 @@
 ## GCP
 
 ### Prerequisites
-Install the Google Cloud CLI
+- Install the Google Cloud CLI
 
 `source scripts/setup-gcp.sh`
 
