@@ -134,10 +134,11 @@ lint:
 
 .PHONY: pex
 pex: 
-	pip install pex \
-	make install \
-	poetry run pip freeze > requirements.txt \
-	pex -v -r requirements.txt dist/${IMAGE}-0.1.0-py3-none-any.whl -e ${IMAGE}.jobs.jobs_1 -o dist/${IMAGE}.pex --disable-cache
+	pip install pex && \
+	make install && \
+	poetry run pip freeze > requirements.txt && \
+	pex -v -r requirements.txt -e ${IMAGE}.jobs.jobs_1 -o dist/${IMAGE}.pex --disable-cache
+	# pex -v -r requirements.txt dist/${IMAGE}-0.1.0-py3-none-any.whl -e ${IMAGE}.jobs.jobs_1 -o dist/${IMAGE}.pex --disable-cache
 
 # Example: make clean_docker VERSION=latest
 # Example: make clean_docker IMAGE=some_name VERSION=0.1.0
