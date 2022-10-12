@@ -34,7 +34,7 @@ def create_data(spark):
     store_dataframe_on_gcp_bucket(
         spark, df, bucket_name=spark.conf.get("BUCKET_NAME"), filename="enjoy", format="parquet"
     )
-    pass
+    return df
 
 
 def read_data(spark):
@@ -55,7 +55,7 @@ def workflow():
     spark = session_builder()
     spark = set_session_conf(spark, **conf)
 
-    create_data(spark)
+    df = create_data(spark)
     read_data(spark)
 
 

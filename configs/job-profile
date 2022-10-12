@@ -1,0 +1,2 @@
+spark.driver.memory="3840m"
+spark.executor.cores="12"
