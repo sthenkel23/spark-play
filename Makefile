@@ -88,7 +88,8 @@ download-poetry:
 
 .PHONY: install
 install:
-	poetry env use python3.10
+	# poetry env use python3.10
+	poetry shell
 	poetry lock -n
 	poetry install -n
 	
