@@ -28,7 +28,7 @@ def set_session_conf(spark: SparkSession, **kwargs) -> SparkSession:
     for c in spark.sparkContext.getConf().getAll():
         print(c)
     for k, v in kwargs.items():
-        print("Set spark config to \n")
+        print("\n\nSet spark config to \n")
         print(k, v)
         spark.conf.set(k, v)
     return spark
@@ -120,7 +120,7 @@ def store_dataframe_on_gcp_bucket(
         df.coalesce(1)
         .write.option("header", "true")
         .mode(mode)
-        .parquet(f"gs://${bucket_name}/data/{filename}.{format}")
+        .parquet(f"gs://{bucket_name}/data/{filename}.{format}")
     )
 
 
@@ -134,3 +134,18 @@ def read_dataframe(spark: SparkSession, workspace: str, filename: str, format: s
         format (str): _description_
     """
     return spark.read.parquet(f"{workspace}/data/{filename}.{format}")
+
+
+def read_dataframe_from_gcp_bucket(spark: SparkSession, bucket_name: str, filename: str, format: str) -> DataFrame:
+    """_summary_
+
+    Args:
+        spark (SparkSession): _description_
+        bucket_name (str): _description_
+        filename (str): _description_
+        format (str): _description_
+
+    Returns:
+        DataFrame: _description_
+    """
+    return spark.read.parquet(f"gs://{bucket_name}/data/{filename}.{format}")

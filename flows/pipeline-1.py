@@ -1,11 +1,10 @@
-import os
+import sys
 from pyspark.sql import functions as F
 from spark_play.utils.helper import Timer
 from spark_play.transforms.synthetic_data import pd_rdn_feature_creator
 from spark_play.utils.spark_session import (
-    store_dataframe,
     store_dataframe_on_gcp_bucket,
-    read_dataframe,
+    read_dataframe_from_gcp_bucket,
 )
 from spark_play.utils.spark_session import session_builder, set_session_conf
 
@@ -24,27 +23,31 @@ def create_data(spark):
         df = df.join(F.broadcast(df_2), "id", "left")
 
     df = df.agg(
-        F.countDistinct(F.col("id")).alias("User Count"),
+        F.countDistinct(F.col("id")).alias("User-Count"),
         F.countDistinct(F.when(F.col("f_0").isNull(), F.col("id"))).alias("a"),
         F.countDistinct(F.when(F.col("f_0").isNotNull(), F.col("id"))).alias("b"),
-        F.sum(F.when(F.col("f_0").isNull(), 1).otherwise(0)).alias("feature missing"),
-        F.sum(F.when(F.col("f_0").isNotNull(), 1).otherwise(0)).alias("common features"),
+        F.sum(F.when(F.col("f_0").isNull(), 1).otherwise(0)).alias("feature-missing"),
+        F.sum(F.when(F.col("f_0").isNotNull(), 1).otherwise(0)).alias("common-features"),
     )
     print(df.show())
     # store_dataframe(df, workspace="./", filename="enjoy", format="parquet")
-    store_dataframe_on_gcp_bucket(spark, df, bucket_name=os.environ["BUCKET_NAME"], filename="enjoy", format="parquet")
+    store_dataframe_on_gcp_bucket(spark, df, bucket_name=spark.conf.get("BUCKET_NAME"), filename="enjoy", format="parquet")
     pass
 
 
 def read_data(spark):
-    df = read_dataframe(spark, workspace="./", filename="enjoy", format="parquet")
+    df = read_dataframe_from_gcp_bucket(spark, bucket_name=spark.conf.get("BUCKET_NAME"), filename="enjoy", format="parquet")
     print(df.show())
     pass
 
 
 def workflow():
+    conf = {
+        "spark.app.name": "new_name",
+        "BUCKET_NAME": sys.argv[1]
+    }
     spark = session_builder()
-    spark = set_session_conf(spark, **{"spark.app.name": "new_name"})
+    spark = set_session_conf(spark, **conf)
 
     create_data(spark)
     read_data(spark)
