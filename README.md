@@ -8,6 +8,10 @@
 `source scripts/poetry-setup-skeleton.sh`
 
 ## GCP
+
+### Prerequisites
+Install the Google Cloud CLI
+
 `source scripts/setup-gcp.sh`
 
 Make changes in `flows/pipeline-1.py`
