@@ -50,7 +50,7 @@ semantic-version==2.3.0
 six==1.16.0
 smmap==5.0.0
 snowballstemmer==2.2.0
--e git+https://github.com/sthenkel23/spark-play.git@e1ce46d5c8acb3c8f9b0c22e55bfc534e719a4d1#egg=spark_play
+-e git+https://github.com/sthenkel23/spark-play.git@c67adae8ca72bbd4f113efc7aa38e9c927e84c87#egg=spark_play
 toml==0.10.2
 tomli==2.0.1
 tomlkit==0.11.5

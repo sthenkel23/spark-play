@@ -92,6 +92,9 @@ install:
 	poetry lock -n
 	poetry install -n
 	
+.PHONY: build
+build:
+	poetry build
 
 .PHONY: check-safety
 check-safety:
@@ -135,10 +138,11 @@ lint:
 .PHONY: pex
 pex: 
 	pip install pex && \
-	make install && \
 	poetry run pip freeze > requirements.txt && \
-	pex -v -r requirements.txt -e ${IMAGE}.jobs.jobs_1 -o dist/${IMAGE}.pex --disable-cache
-	# pex -v -r requirements.txt dist/${IMAGE}-0.1.0-py3-none-any.whl -e ${IMAGE}.jobs.jobs_1 -o dist/${IMAGE}.pex --disable-cache
+	pex -v -r requirements.txt -e flows/pipeline-1.py -o dist/${IMAGE}.pex --disable-cache
+
+.PHONY: dist
+dist: install build pex
 
 # Example: make clean_docker VERSION=latest
 # Example: make clean_docker IMAGE=some_name VERSION=0.1.0
