@@ -7,10 +7,15 @@
 
 ## GCP
 `source scripts/setup-gcp.sh`
-Make changes in flows/pipeline-1.py
+
+Make changes in `flows/pipeline-1.py`
+
 `make dist`
+
 `source scripts/submit-dataproc-spark.sh`
+
 When done
+
 `source kill-gcp.sh`
 
 ## Contribute
