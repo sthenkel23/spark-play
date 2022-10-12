@@ -1,4 +1,5 @@
-# Boilerplate to run pyspark and play
+# Boilerplate
+Run pyspark locally and on GCP
 
 [![Test, CI & Create Artifact](https://github.com/sthenkel23/spark-play/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/sthenkel23/spark-play/actions/workflows/ci.yml)
 
