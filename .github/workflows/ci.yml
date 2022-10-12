@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.8", "3.9", "3.10"]
+        python-version: ["3.9", "3.10"]
     steps:
     - uses: actions/checkout@v3
     - name: Set up Python ${{ matrix.python-version }}
@@ -55,7 +55,7 @@ jobs:
     - name: Prepare pex
       run: |
         pip install pex
-        poetry env use python3.10
+        poetry env use python3.8
         poetry run pip freeze > requirements.txt
         pex -v -r requirements.txt -e jobs/${IMAGE}.jobs.job_1 -o dist/${IMAGE}.pex --disable-cache
 
