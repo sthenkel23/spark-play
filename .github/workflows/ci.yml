@@ -54,7 +54,7 @@ jobs:
     
     - name: Prepare pex
       run: |
-        pip install pex
+        pip install pex==2.1.110
         poetry env use python3.8
         poetry run pip freeze > requirements.txt
         pex -v -r requirements.txt -o dist/${IMAGE}.pex --disable-cache
